@@ -1,4 +1,4 @@
-# Blaxor QuickGrid RowClass Workaround
+# Blazor QuickGrid RowClass Workaround
 
 In .NET 10, the Blazor QuickGrid component will have support for setting the CSS class dynamically for row.
 
