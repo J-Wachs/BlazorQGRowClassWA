@@ -1,0 +1,106 @@
+﻿@page "/weather"
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@*
+    This example shows how to set the class (background colour) of QuickGrid rows based on the
+    temperature reported.
+
+    The key to add classes dynamically it to use CSS :has() selector.
+    In code, we set a SPAN tag toe have a fictious class based on the temperature.
+    Then in CSS we use :has() to set the actual class for the entire row (TR).
+    Note that :has() is not supported in all browsers, but it is supported in all modern browsers.
+*@
+
+<style>
+    tr:has(.freezeing), tr:has(.freezeing) td {
+        background: blue !important;
+        color: white !important;
+    }
+
+    tr:has(.cold), tr:has(.cold) td {
+        background: lightblue !important;
+    }
+
+    tr:has(.cozy), tr:has(.cozy) td {
+        background: lightgreen !important;
+    }
+
+    tr:has(.hot), tr:has(.hot) td {
+        background: red !important;
+    }
+
+</style>
+
+<PageTitle>Weather</PageTitle>
+
+<h1>Weather</h1>
+
+<p>Showing how to set class (background colour) of grid rows. Reload the page to get new values.</p>
+
+@if (weatherForecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<QuickGrid Items="weatherForecasts" Class="table">
+    @* Note here that we have to have a field that is implemented with TemplateColumn in order for
+        us to set a fictious class on a SPAN element based on the row value.
+        Then we can use CSS :has() selector to set the actual class for the entire row (TR).
+    *@
+    <TemplateColumn Title="Date">
+        <span class="@GetTempClass(context.TemperatureC)">@context.Date</span>
+    </TemplateColumn>
+    <PropertyColumn Title="Temp. (C)" Property="@(f => f.TemperatureC)" />
+    <PropertyColumn Title="Temp. (F)" Property = "@(f => f.TemperatureF)" />
+    <PropertyColumn Title="Summary" Property="@(f => f.Summary)" />
+</QuickGrid>
+}
+
+@code {
+    private IQueryable<WeatherForecast>? weatherForecasts;
+
+    /// <summary>
+    /// Setup data values for the QuickGrid.
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+        weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        {
+            Date = startDate.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = summaries[Random.Shared.Next(summaries.Length)]
+        }).AsQueryable();
+    }
+
+    /// <summary>
+    /// Depending on the temperature, return a fictious class name.
+    /// </summary>
+    /// <param name="tempC"></param>
+    /// <returns></returns>
+    private string GetTempClass(int tempC)
+    {
+        return tempC switch
+        {
+            <= 0 => "freezeing",
+            <= 15 => "cold",
+            >= 30 => "hot",
+            _ => "cozy"
+        };
+    }
+
+    /// <summary>
+    /// Data class for the weather forecast.
+    /// </summary>
+    private class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
