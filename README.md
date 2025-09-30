@@ -6,7 +6,7 @@ This gives you the posibility to e.g. set row color depending on the content of 
 
 If your project is at .NET 7, 8 or 9 you can have the same functionality by using the workaround shown in this repo.
 
-The service has been developed in .NET 9.
+The project has been developed in .NET 9.
 
 For all the details, please look at the source code for the Weather.razor component. Everything is explained in
 comments.
