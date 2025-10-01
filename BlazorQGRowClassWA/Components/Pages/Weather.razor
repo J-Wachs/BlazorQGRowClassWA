@@ -2,13 +2,13 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 
 @*
-    This example shows how to set the class (background colour) of QuickGrid rows based on the
-    temperature reported.
+    This example shows how to set the class (in this case ghe background colour) of QuickGrid rows
+    based on the temperature reported.
 
-    The key to add classes dynamically it to use CSS :has() selector.
-    In code, we set a SPAN tag toe have a fictious class based on the temperature.
-    Then in CSS we use :has() to set the actual class for the entire row (TR).
-    Note that :has() is not supported in all browsers, but it is supported in all modern browsers.
+    The key to add classes dynamically it to use CSS :has() selector. In the code, we set a SPAN
+    tag to have a dummy class based on the temperature. Then in CSS we use :has() to set the
+    actual class for the entire row (TR). Note that :has() is not supported in all browsers,
+    but it is supported in all modern browsers.
 *@
 
 <style>
@@ -45,7 +45,7 @@ else
 {
 <QuickGrid Items="weatherForecasts" Class="table">
     @* Note here that we have to have a field that is implemented with TemplateColumn in order for
-        us to set a fictious class on a SPAN element based on the row value.
+        us to set a dummy class on a SPAN element based on the row value.
         Then we can use CSS :has() selector to set the actual class for the entire row (TR).
     *@
     <TemplateColumn Title="Date">
@@ -78,7 +78,7 @@ else
     }
 
     /// <summary>
-    /// Depending on the temperature, return a fictious class name.
+    /// Depending on the temperature, return a dummy class name.
     /// </summary>
     /// <param name="tempC"></param>
     /// <returns></returns>
